@@ -16,9 +16,7 @@ jobs:
       - name: Download all files from SourceForge
         run: |
           mkdir -p sourceforge-files
-          cd sourceforge-files
-          wget -r -np -nH --cut-dirs=4 --no-check-certificate -R "index.html*" -e robots=off --accept '*' https://sourceforge.net/projects/openwrt-passwall-build/files/releases/packages-24.10/arm_cortex-a7_neon-vfpv4/ --content-disposition
-          cd ..
+          wget -r -np -nH -P sourceforge-files -R "index.html*" -A "ipk,json,manifest,gz" https://sourceforge.net/projects/openwrt-passwall-build/files/releases/packages-24.10/arm_cortex-a7_neon-vfpv4/
 
       - name: Commit and push changes
         run: |
