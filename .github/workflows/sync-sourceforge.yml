@@ -1,15 +1,16 @@
-name: Install Aria2 Example
+name: Download SourceForge Files
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to use'
+        default: 'main'
+        required: true
 
 jobs:
-  install-aria2:
+  download:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
@@ -17,5 +18,16 @@ jobs:
     - name: Install aria2
       run: sudo apt-get update && sudo apt-get install -y aria2
 
-    - name: Verify aria2 installation
-      run: aria2c --version
+    - name: Download files with aria2c
+      run: |
+        mkdir -p sourceforge-files
+        aria2c -d sourceforge-files -x 16 -s 16 -k 1M -c \
+        https://sourceforge.net/projects/openwrt-passwall-build/files/releases/packages-24.10/arm_cortex-a7_neon-vfpv4/
+
+    - name: Commit and push changes
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+        git add .
+        git commit -m "Add downloaded files"
+        git push origin ${{ github.event.inputs.branch }}
