@@ -17,7 +17,7 @@ jobs:
         run: |
           mkdir -p sourceforge-files
           cd sourceforge-files
-          wget -r -np -nH --cut-dirs=4 -R "index.html*" https://sourceforge.net/projects/openwrt-passwall-build/files/releases/packages-24.10/arm_cortex-a7_neon-vfpv4/
+          wget -r -np -nH --cut-dirs=4 --no-check-certificate -R "index.html*" -e robots=off --accept '*' https://sourceforge.net/projects/openwrt-passwall-build/files/releases/packages-24.10/arm_cortex-a7_neon-vfpv4/ --content-disposition
           cd ..
 
       - name: Commit and push changes
