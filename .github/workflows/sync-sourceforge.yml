@@ -1,0 +1,30 @@
+name: Sync OpenWrt Passwall to GitHub
+
+on:
+  workflow_dispatch: # اجرای دستی
+  schedule:
+    - cron: '0 0 * * *' # اجرای روزانه
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Download all files from SourceForge
+        run: |
+          mkdir sourceforge-files
+          cd sourceforge-files
+          wget -r -np -nH --cut-dirs=4 -R "index.html*" https://sourceforge.net/projects/openwrt-passwall-build/files/releases/packages-24.10/arm_cortex-a7_neon-vfpv4/
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add .
+          git commit -m "Sync OpenWrt Passwall files from SourceForge"
+          git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
