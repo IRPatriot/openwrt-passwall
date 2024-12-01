@@ -1,2 +1,21 @@
-- name: Install aria2
-  run: sudo apt-get update && sudo apt-get install -y aria2
+name: Install Aria2 Example
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  install-aria2:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Install aria2
+      run: sudo apt-get update && sudo apt-get install -y aria2
+
+    - name: Verify aria2 installation
+      run: aria2c --version
