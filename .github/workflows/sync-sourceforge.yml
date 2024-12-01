@@ -22,7 +22,7 @@ jobs:
       run: |
         mkdir -p sourceforge-files
         aria2c -d sourceforge-files -x 16 -s 16 -k 1M -c \
-        https://sourceforge.net/projects/openwrt-passwall-build/files/releases/packages-24.10/arm_cortex-a7_neon-vfpv4/
+        https://sourceforge.net/projects/openwrt-passwall-build/files/releases/packages-24.10/arm_cortex-a7_neon-vfpv4/passwall2/
 
     - name: Commit and push changes
       run: |
